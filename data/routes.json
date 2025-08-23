@@ -1,0 +1,40 @@
+[
+  {
+    "id": "route1",
+    "name": "CBD to University",
+    "fare": 15,
+    "handSignal": "Index finger raised",
+    "stops": ["CBD", "Midtown", "University"],
+    "frequency": 0.8,
+    "loadingTimes": {
+      "first": "05:00",
+      "last": "21:00",
+      "rush": ["07:00-09:00", "16:00-18:00"],
+      "quiet": ["11:00-13:00"]
+    },
+    "path": [
+      [-33.9249, 18.4241],
+      [-33.9290, 18.4370],
+      [-33.9349, 18.4510]
+    ]
+  },
+  {
+    "id": "route2",
+    "name": "Station to Waterfront",
+    "fare": 12,
+    "handSignal": "Palm facing down",
+    "stops": ["Central Station", "Harbour", "Waterfront"],
+    "frequency": 0.4,
+    "loadingTimes": {
+      "first": "06:00",
+      "last": "20:00",
+      "rush": ["06:30-08:00", "17:00-19:00"],
+      "quiet": ["12:00-14:00"]
+    },
+    "path": [
+      [-33.9180, 18.4280],
+      [-33.9090, 18.4230],
+      [-33.9030, 18.4200]
+    ]
+  }
+]
