@@ -1,17 +1,26 @@
 var app = angular.module('TaxiFinderApp', []);
 app.controller('MapCtrl', function($scope, $http, $interval) {
-  var map = L.map('map').setView([-33.9249, 18.4241], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: -33.9249, lng: 18.4241 },
+    zoom: 12,
+    styles: [{ elementType: 'geometry', stylers: [{ color: '#000000' }] },
+             { elementType: 'labels.text.fill', stylers: [{ color: '#d4af37' }] },
+             { elementType: 'labels.text.stroke', stylers: [{ color: '#000000' }] }]
+  });
+
 
   $http.get('/api/routes').then(function(res) {
     $scope.routes = res.data;
     res.data.forEach(function(route) {
       var color = getColor(route.frequency);
-      var line = L.polyline(route.path, { color: color }).addTo(map);
-      line.bindTooltip(route.name);
-      line.on('click', function() {
+      var path = route.path.map(function(p) { return { lat: p[0], lng: p[1] }; });
+      var line = new google.maps.Polyline({
+        path: path,
+        strokeColor: color,
+        map: map
+      });
+      line.addListener('click', function() {
+
         $scope.$apply(function() { $scope.selected = route; });
       });
     });
@@ -20,10 +29,15 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
   function refreshTaxis() {
     $http.get('/api/taxis').then(function(res) {
       if ($scope.taxiMarkers) {
-        $scope.taxiMarkers.forEach(function(m) { map.removeLayer(m); });
+        $scope.taxiMarkers.forEach(function(m) { m.setMap(null); });
       }
       $scope.taxiMarkers = res.data.map(function(t) {
-        return L.marker([t.lat, t.lng]).addTo(map).bindTooltip('Taxi ' + t.id + ' (' + (t.routeId || 'n/a') + ')');
+        return new google.maps.Marker({
+          position: { lat: t.lat, lng: t.lng },
+          map: map,
+          title: 'Taxi ' + t.id + ' (' + (t.routeId || 'n/a') + ')'
+        });
+
       });
     });
   }
@@ -31,8 +45,9 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
   $interval(refreshTaxis, 5000);
 
   function getColor(freq) {
-    var r = Math.round(255 * freq);
-    var b = Math.round(255 * (1 - freq));
-    return 'rgb(' + r + ',0,' + b + ')';
+    var r = Math.round(255 * freq).toString(16).padStart(2, '0');
+    var b = Math.round(255 * (1 - freq)).toString(16).padStart(2, '0');
+    return '#' + r + '00' + b;
+
   }
 });

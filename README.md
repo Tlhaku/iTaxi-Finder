@@ -1,7 +1,8 @@
 iTaxi Finder
 ============
 
-A simple MEAN-stack style demo that displays South African mini-bus taxi routes with colour-coded frequencies and live taxi locations. The project uses a Node/Express backend, AngularJS front-end and Leaflet maps. Taxi positions are kept in memory by default but can use MongoDB when `MONGODB_URI` is provided.
+A simple MEAN-stack style demo that displays South African mini-bus taxi routes with colour-coded frequencies and live taxi locations. The project uses a Node/Express backend, AngularJS front-end and the free Google Maps JavaScript API. Taxi positions are kept in memory by default but can use MongoDB when `MONGODB_URI` is provided.
+
 
 ## Setup
 
@@ -14,7 +15,8 @@ npm install
 
 ## Running locally
 
-Start the server:
+Replace `YOUR_API_KEY` in `public/index.html` with a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key). Then start the server:
+
 
 ```bash
 npm start
@@ -32,6 +34,19 @@ Open `http://localhost:3000/taxi.html` on a phone (connected to the same network
 
 Navigate to `http://localhost:3000` in a browser to view the map with routes. Click a route to see fare, hand signals, stops and time information.
 
+### Adding custom routes
+
+Routes are stored in `data/routes.json`. To add a route without editing files, send a POST request:
+
+```bash
+curl -X POST http://localhost:3000/api/routes \
+  -H "Content-Type: application/json" \
+  -d '{"id":"route3","name":"Custom","fare":10,"handSignal":"Thumb up","stops":["A","B"],"frequency":0.5,"loadingTimes":{"first":"05:00","last":"21:00","rush":[],"quiet":[]},"path":[[-33.9,18.4],[-33.91,18.41]]}'
+```
+
+Newly added routes are appended to `data/routes.json` and appear on the map after a refresh.
+
 ## Notes
 
-This is a minimal demonstration; route data is static and taxi positions reset when the server restarts (unless MongoDB is configured).
+This is a minimal demonstration; taxi positions reset when the server restarts unless MongoDB is configured.
+

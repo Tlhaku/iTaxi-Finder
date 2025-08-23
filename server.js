@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+const fs = require('fs');
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const routes = require('./data/routes.json');
+const routesPath = path.join(__dirname, 'data', 'routes.json');
+let routes = require('./data/routes.json');
+
 let taxis = {};
 let taxiCollection;
 
@@ -22,6 +26,20 @@ if (process.env.MONGODB_URI) {
 
 app.get('/api/routes', (req, res) => {
   res.json(routes);
+});
+
+app.post('/api/routes', (req, res) => {
+  const route = req.body;
+  if (!route.id || !route.name || !Array.isArray(route.path)) {
+    return res.status(400).json({ error: 'id, name and path required' });
+  }
+  routes.push(route);
+  fs.writeFile(routesPath, JSON.stringify(routes, null, 2), err => {
+    if (err) {
+      return res.status(500).json({ error: 'failed to save route' });
+    }
+    res.json({ status: 'ok' });
+  });
 });
 
 app.get('/api/taxis', async (req, res) => {
