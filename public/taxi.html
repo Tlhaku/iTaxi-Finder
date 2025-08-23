@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Taxi Uploader</title>
+  <style>
+    body { background: #000; color: #fff; font-family: sans-serif; }
+    h1 { color: #d4af37; }
+  </style>
+  <script>
+    function start() {
+      if (!navigator.geolocation) {
+        alert('Geolocation not supported');
+        return;
+      }
+      const id = document.getElementById('taxiId').value || 'demo';
+      const routeId = document.getElementById('routeId').value || '';
+      navigator.geolocation.watchPosition(function(pos) {
+        fetch('/api/taxis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: id,
+            routeId: routeId,
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          })
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Taxi Location Uploader</h1>
+  <label>ID: <input id="taxiId" /></label><br/>
+  <label>Route: <input id="routeId" /></label><br/>
+  <button onclick="start()">Share Location</button>
+  <p>Leave this page open to continuously share.</p>
+</body>
+</html>
