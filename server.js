@@ -4,12 +4,14 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 const routesPath = path.join(__dirname, 'data', 'routes.json');
 let routes = require('./data/routes.json');
+
 let taxis = {};
 let taxiCollection;
 

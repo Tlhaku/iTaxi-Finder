@@ -3,6 +3,7 @@ iTaxi Finder
 
 A simple MEAN-stack style demo that displays South African mini-bus taxi routes with colour-coded frequencies and live taxi locations. The project uses a Node/Express backend, AngularJS front-end and the free Google Maps JavaScript API. Taxi positions are kept in memory by default but can use MongoDB when `MONGODB_URI` is provided.
 
+
 ## Setup
 
 1. Install [Node.js](https://nodejs.org/) (v18 or later recommended).
@@ -15,6 +16,7 @@ npm install
 ## Running locally
 
 Replace `YOUR_API_KEY` in `public/index.html` with a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key). Then start the server:
+
 
 ```bash
 npm start
@@ -47,3 +49,4 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 ## Notes
 
 This is a minimal demonstration; taxi positions reset when the server restarts unless MongoDB is configured.
+

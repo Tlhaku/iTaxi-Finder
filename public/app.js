@@ -8,6 +8,7 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
              { elementType: 'labels.text.stroke', stylers: [{ color: '#000000' }] }]
   });
 
+
   $http.get('/api/routes').then(function(res) {
     $scope.routes = res.data;
     res.data.forEach(function(route) {
@@ -19,6 +20,7 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
         map: map
       });
       line.addListener('click', function() {
+
         $scope.$apply(function() { $scope.selected = route; });
       });
     });
@@ -35,6 +37,7 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
           map: map,
           title: 'Taxi ' + t.id + ' (' + (t.routeId || 'n/a') + ')'
         });
+
       });
     });
   }
@@ -45,5 +48,6 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
     var r = Math.round(255 * freq).toString(16).padStart(2, '0');
     var b = Math.round(255 * (1 - freq)).toString(16).padStart(2, '0');
     return '#' + r + '00' + b;
+
   }
 });
