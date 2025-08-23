@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="TaxiFinderApp">
+<head>
+  <meta charset="utf-8" />
+  <title>iTaxi Finder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  <style>
+    body { background: #000; color: #fff; font-family: sans-serif; }
+    h1 { color: #d4af37; }
+    #map { height: 80vh; }
+    .dialog { position: absolute; top: 10px; right: 10px; background: #111; border: 2px solid #d4af37; padding: 10px; }
+    a { color: #d4af37; }
+  </style>
+</head>
+<body ng-controller="MapCtrl">
+  <h1>iTaxi Finder</h1>
+  <div id="map"></div>
+  <div class="dialog" ng-if="selected">
+    <h2>{{selected.name}}</h2>
+    <p><strong>Fare:</strong> R{{selected.fare}}</p>
+    <p><strong>Hand Signal:</strong> {{selected.handSignal}}</p>
+    <p><strong>Stops:</strong> {{selected.stops.join(', ')}}</p>
+    <p><strong>Loading:</strong> {{selected.loadingTimes.first}} - {{selected.loadingTimes.last}}</p>
+    <p><strong>Rush:</strong> {{selected.loadingTimes.rush.join(', ')}}</p>
+    <p><strong>Quiet:</strong> {{selected.loadingTimes.quiet.join(', ')}}</p>
+  </div>
+  <p>Open <a href="/taxi.html">Taxi Page</a> on your phone to act as a taxi.</p>
+  <script src="app.js"></script>
+</body>
+</html>
