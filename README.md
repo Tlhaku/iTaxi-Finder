@@ -15,7 +15,10 @@ npm install
 
 ## Running locally
 
-Replace `YOUR_API_KEY` in `public/index.html` with a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key). Then start the server:
+
+The repository is configured with a demo Google Maps API key in `public/index.html`.
+You can replace it with your own [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+if desired. Start the server with:
 
 
 ```bash
