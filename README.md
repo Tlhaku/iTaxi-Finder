@@ -15,7 +15,10 @@ npm install
 
 ## Running locally
 
-Replace `YOUR_API_KEY` in `public/index.html` with a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key). Then start the server:
+
+The repository is configured with a demo Google Maps API key in `public/index.html`.
+You can replace it with your own [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+if desired. Start the server with:
 
 
 ```bash
@@ -34,9 +37,11 @@ Open `http://localhost:3000/taxi.html` on a phone (connected to the same network
 
 Navigate to `http://localhost:3000` in a browser to view the map with routes. Click a route to see fare, hand signals, stops and time information.
 
-### Adding custom routes
+### Editing and adding routes
 
-Routes are stored in `data/routes.json`. To add a route without editing files, send a POST request:
+Routes are stored in `data/routes.json`. To change an existing route, edit this file directly and adjust fields such as `stops`, `fare` or the `path` array of `[lat, lng]` points. Refresh the browser (or restart the server) to see the changes.
+
+To add a brand new route without touching files, send a POST request:
 
 ```bash
 curl -X POST http://localhost:3000/api/routes \
@@ -45,6 +50,16 @@ curl -X POST http://localhost:3000/api/routes \
 ```
 
 Newly added routes are appended to `data/routes.json` and appear on the map after a refresh.
+
+### Snapping routes to roads
+
+The app draws coordinates exactly as provided. To align a path with streets, generate coordinates using the [Directions API](https://developers.google.com/maps/documentation/directions/get-directions) or the [Roads API Snap to Roads](https://developers.google.com/maps/documentation/roads/snap) endpoint and use the returned points in your route:
+
+```bash
+curl 'https://roads.googleapis.com/v1/snapToRoads?path=-33.9,18.4|-33.91,18.41&key=YOUR_API_KEY'
+```
+
+Replace `YOUR_API_KEY` with a valid Maps API key, then copy the snapped latitude/longitude pairs into the `path` array in `data/routes.json` or your POST payload.
 
 ## Notes
 
