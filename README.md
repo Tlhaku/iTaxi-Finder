@@ -27,7 +27,25 @@ npm start
 
 This serves the web site at `http://localhost:3000`.
 
-To persist taxi locations, set the environment variable `MONGODB_URI` to a running MongoDB instance before starting the server.
+To persist taxi locations, set the environment variable `MONGODB_URI` to your MongoDB connection string before starting the server.
+
+Examples:
+
+- **macOS/Linux**
+
+  ```bash
+  export MONGODB_URI="mongodb://localhost:27017/taxi"
+  npm start
+  ```
+
+- **Windows (PowerShell)**
+
+  ```powershell
+  $env:MONGODB_URI="mongodb://localhost:27017/taxi"
+  npm start
+  ```
+
+Use the URI of a MongoDB server you control. For a local database, the string above creates/uses a database named `taxi` on `localhost`. For hosted services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), obtain the connection string from your dashboard's **Connect** button and substitute it for the examples above.
 
 ### Acting as a taxi
 
