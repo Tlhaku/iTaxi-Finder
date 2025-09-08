@@ -68,6 +68,7 @@ Routes are also stored in `data/routes.json`. To change an existing route by han
 
 To add a brand new route programmatically, send a POST request:
 
+
 ```bash
 curl -X POST http://localhost:3000/api/routes \
   -H "Content-Type: application/json" \
@@ -79,6 +80,7 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 ### Snapping routes to roads
 
 `routes.html` automatically uses the [Google Roads API](https://developers.google.com/maps/documentation/roads/snap) when you click **Snap to Roads**, so the saved path follows actual streets. If you prefer scripting, you can call the endpoint yourself:
+
 
 ```bash
 curl 'https://roads.googleapis.com/v1/snapToRoads?path=-33.9,18.4|-33.91,18.41&key=YOUR_API_KEY'

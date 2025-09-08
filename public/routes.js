@@ -1,9 +1,11 @@
 const API_KEY = 'AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk';
 let map, polyline;
 let path = [];
+
 let redoStack = [];
 let routesData = [];
 const select = document.getElementById('existingRoutes');
+
 
 function init() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -15,16 +17,19 @@ function init() {
   map.addListener('click', e => {
     path.push(e.latLng);
     redoStack = [];
+
     polyline.setPath(path);
   });
 
   fetch('/api/routes').then(r => r.json()).then(routes => {
     routesData = routes;
+
     const blank = document.createElement('option');
     blank.value = '';
     blank.textContent = '-- new route --';
     select.appendChild(blank);
     routesData.forEach(rt => {
+
       const opt = document.createElement('option');
       opt.value = rt.id;
       opt.textContent = rt.name;
@@ -36,11 +41,14 @@ function init() {
 
 function loadRoute(id) {
   const route = routesData.find(r => r.id === id);
+
   document.getElementById('routeId').value = route ? route.id : '';
   document.getElementById('routeName').value = route ? route.name : '';
   document.getElementById('routeFreq').value = route && route.frequency !== undefined ? route.frequency : '';
   path = route ? route.path.map(p => new google.maps.LatLng(p[0], p[1])) : [];
+
   redoStack = [];
+
   polyline.setPath(path);
   if (path.length) {
     const bounds = new google.maps.LatLngBounds();
@@ -103,12 +111,14 @@ document.getElementById('redo').addEventListener('click', () => {
   if (redoStack.length === 0) return;
   const point = redoStack.pop();
   path.push(point);
+
   polyline.setPath(path);
 });
 
 document.getElementById('clear').addEventListener('click', () => {
   path = [];
   redoStack = [];
+
   polyline.setPath(path);
 });
 
@@ -129,6 +139,7 @@ document.getElementById('delete').addEventListener('click', () => {
 
 document.getElementById('cancel').addEventListener('click', () => {
   redoStack = [];
+
   loadRoute(select.value);
 });
 
@@ -138,6 +149,7 @@ document.getElementById('togglePanel').addEventListener('click', () => {
 
 document.getElementById('closePanel').addEventListener('click', () => {
   document.getElementById('helpPanel').classList.add('hidden');
+
 });
 
 window.init = init;
