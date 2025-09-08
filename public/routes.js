@@ -1,6 +1,8 @@
 const API_KEY = 'AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk';
 let map, polyline;
 let path = [];
+
+let redoStack = [];
 let routesData = [];
 const select = document.getElementById('existingRoutes');
 
@@ -14,6 +16,8 @@ function init() {
 
   map.addListener('click', e => {
     path.push(e.latLng);
+    redoStack = [];
+
     polyline.setPath(path);
   });
 
@@ -42,6 +46,9 @@ function loadRoute(id) {
   document.getElementById('routeName').value = route ? route.name : '';
   document.getElementById('routeFreq').value = route && route.frequency !== undefined ? route.frequency : '';
   path = route ? route.path.map(p => new google.maps.LatLng(p[0], p[1])) : [];
+
+  redoStack = [];
+
   polyline.setPath(path);
   if (path.length) {
     const bounds = new google.maps.LatLngBounds();
@@ -94,12 +101,24 @@ document.getElementById('routeForm').addEventListener('submit', e => {
 });
 
 document.getElementById('undo').addEventListener('click', () => {
-  path.pop();
+  if (path.length === 0) return;
+  const last = path.pop();
+  redoStack.push(last);
+  polyline.setPath(path);
+});
+
+document.getElementById('redo').addEventListener('click', () => {
+  if (redoStack.length === 0) return;
+  const point = redoStack.pop();
+  path.push(point);
+
   polyline.setPath(path);
 });
 
 document.getElementById('clear').addEventListener('click', () => {
   path = [];
+  redoStack = [];
+
   polyline.setPath(path);
 });
 
@@ -119,6 +138,8 @@ document.getElementById('delete').addEventListener('click', () => {
 });
 
 document.getElementById('cancel').addEventListener('click', () => {
+  redoStack = [];
+
   loadRoute(select.value);
 });
 

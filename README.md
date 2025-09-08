@@ -38,6 +38,17 @@ Examples:
   npm start
   ```
 
+- **Windows (PowerShell)**
+
+  ```powershell
+  $env:MONGODB_URI="mongodb://localhost:27017/taxi"
+  npm start
+  ```
+
+Use the URI of a MongoDB server you control. For a local database, the string above creates/uses a database named `taxi` on `localhost`. For hosted services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), obtain the connection string from your dashboard's **Connect** button and substitute it for the examples above.
+
+### Broadcasting from your phone
+
 1. Ensure your phone and the computer running the server are on the same network. Use the computer's IP address instead of `localhost` if needed (e.g. `http://192.168.1.10:3000/taxi.html`).
 2. Open `taxi.html` in the phone's browser and allow location access.
 3. Enter a taxi **ID** and optionally the **route** it is on, then tap **Share Location**. Leave the page open; it will continuously post your GPS coordinates to `/api/taxis`.
@@ -48,6 +59,14 @@ Examples:
 Navigate to `http://localhost:3000` in a browser to view the map with routes. Click a route to see fare, hand signals, stops and time information.
 
 ### Editing and adding routes
+
+#### Web editor
+Open `http://localhost:3000/routes.html` to draw or modify routes directly on a map. Click to add points, use **Undo** to remove the last point, **Redo** to re-add it, or **Clear** to wipe the path. Selecting an existing route from the drop-down loads it for editing; press **Remove** to delete it entirely. After drawing, click **Snap to Roads** to align the path with streets using the Google Roads API. Use **Save** to persist changes or **Cancel** to revert. An **Instructions** panel on the page summarizes these actions.
+
+#### Manual JSON editing
+Routes are also stored in `data/routes.json`. To change an existing route by hand, edit this file directly and adjust fields such as `stops`, `fare` or the `path` array of `[lat, lng]` points. Refresh the browser (or restart the server) to see the changes.
+
+To add a brand new route programmatically, send a POST request:
 
 
 ```bash
@@ -60,6 +79,7 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 
 ### Snapping routes to roads
 
+`routes.html` automatically uses the [Google Roads API](https://developers.google.com/maps/documentation/roads/snap) when you click **Snap to Roads**, so the saved path follows actual streets. If you prefer scripting, you can call the endpoint yourself:
 
 
 ```bash
