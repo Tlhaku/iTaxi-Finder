@@ -60,13 +60,6 @@ Navigate to `http://localhost:3000` in a browser to view the map with routes. Cl
 
 ### Editing and adding routes
 
-#### Web editor
-Open `http://localhost:3000/routes.html` to draw or modify routes directly on a map. Click to add points, then press **Snap to Roads** to align the path using the Google Roads API before saving. Choosing an existing route from the drop-down loads it for editing; saving replaces it, and leaving the selector on `-- new route --` creates a fresh route.
-
-#### Manual JSON editing
-Routes are also stored in `data/routes.json`. To change an existing route by hand, edit this file directly and adjust fields such as `stops`, `fare` or the `path` array of `[lat, lng]` points. Refresh the browser (or restart the server) to see the changes.
-
-To add a brand new route programmatically, send a POST request:
 
 ```bash
 curl -X POST http://localhost:3000/api/routes \
@@ -78,7 +71,7 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 
 ### Snapping routes to roads
 
-`routes.html` automatically uses the [Google Roads API](https://developers.google.com/maps/documentation/roads/snap) when you click **Snap to Roads**, so the saved path follows actual streets. If you prefer scripting, you can call the endpoint yourself:
+
 
 ```bash
 curl 'https://roads.googleapis.com/v1/snapToRoads?path=-33.9,18.4|-33.91,18.41&key=YOUR_API_KEY'
