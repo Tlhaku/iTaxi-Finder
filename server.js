@@ -42,6 +42,40 @@ app.post('/api/routes', (req, res) => {
   });
 });
 
+app.put('/api/routes/:id', (req, res) => {
+  const id = req.params.id;
+  const idx = routes.findIndex(r => r.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ error: 'route not found' });
+  }
+  const route = req.body;
+  if (!route.id || !route.name || !Array.isArray(route.path)) {
+    return res.status(400).json({ error: 'id, name and path required' });
+  }
+  routes[idx] = route;
+  fs.writeFile(routesPath, JSON.stringify(routes, null, 2), err => {
+    if (err) {
+      return res.status(500).json({ error: 'failed to save route' });
+    }
+    res.json({ status: 'ok' });
+  });
+});
+
+app.delete('/api/routes/:id', (req, res) => {
+  const id = req.params.id;
+  const idx = routes.findIndex(r => r.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ error: 'route not found' });
+  }
+  routes.splice(idx, 1);
+  fs.writeFile(routesPath, JSON.stringify(routes, null, 2), err => {
+    if (err) {
+      return res.status(500).json({ error: 'failed to delete route' });
+    }
+    res.json({ status: 'ok' });
+  });
+});
+
 app.get('/api/taxis', async (req, res) => {
   if (taxiCollection) {
     const list = await taxiCollection.find().toArray();

@@ -2,10 +2,7 @@ var app = angular.module('TaxiFinderApp', []);
 app.controller('MapCtrl', function($scope, $http, $interval) {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -33.9249, lng: 18.4241 },
-    zoom: 12,
-    styles: [{ elementType: 'geometry', stylers: [{ color: '#000000' }] },
-             { elementType: 'labels.text.fill', stylers: [{ color: '#d4af37' }] },
-             { elementType: 'labels.text.stroke', stylers: [{ color: '#000000' }] }]
+    zoom: 12
   });
 
 
