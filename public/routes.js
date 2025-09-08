@@ -4,6 +4,7 @@ let path = [];
 let routesData = [];
 const select = document.getElementById('existingRoutes');
 
+
 function init() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -33.9249, lng: 18.4241 },
@@ -18,11 +19,13 @@ function init() {
 
   fetch('/api/routes').then(r => r.json()).then(routes => {
     routesData = routes;
+
     const blank = document.createElement('option');
     blank.value = '';
     blank.textContent = '-- new route --';
     select.appendChild(blank);
     routesData.forEach(rt => {
+
       const opt = document.createElement('option');
       opt.value = rt.id;
       opt.textContent = rt.name;
@@ -34,6 +37,7 @@ function init() {
 
 function loadRoute(id) {
   const route = routesData.find(r => r.id === id);
+
   document.getElementById('routeId').value = route ? route.id : '';
   document.getElementById('routeName').value = route ? route.name : '';
   document.getElementById('routeFreq').value = route && route.frequency !== undefined ? route.frequency : '';
@@ -124,6 +128,7 @@ document.getElementById('togglePanel').addEventListener('click', () => {
 
 document.getElementById('closePanel').addEventListener('click', () => {
   document.getElementById('helpPanel').classList.add('hidden');
+
 });
 
 window.init = init;
