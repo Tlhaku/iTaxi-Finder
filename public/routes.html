@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Route Editor</title>
+  <style>
+    body { font-family: sans-serif; }
+    #map { height: 60vh; width: 100%; margin-bottom: 10px; }
+    label { display: block; margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Route Editor</h1>
+  <select id="existingRoutes"></select>
+  <div id="map"></div>
+  <form id="routeForm">
+    <label>ID <input id="routeId" required /></label>
+    <label>Name <input id="routeName" required /></label>
+    <label>Frequency <input id="routeFreq" type="number" min="0" max="1" step="0.1" /></label>
+    <button type="button" id="snap">Snap to Roads</button>
+    <button type="submit">Save</button>
+  </form>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk"></script>
+  <script src="routes.js"></script>
+</body>
+</html>

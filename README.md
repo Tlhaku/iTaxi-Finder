@@ -47,9 +47,12 @@ Examples:
 
 Use the URI of a MongoDB server you control. For a local database, the string above creates/uses a database named `taxi` on `localhost`. For hosted services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), obtain the connection string from your dashboard's **Connect** button and substitute it for the examples above.
 
-### Acting as a taxi
+### Broadcasting from your phone
 
-Open `http://localhost:3000/taxi.html` on a phone (connected to the same network) and allow location access. Enter an ID and optionally a route identifier. The page will send your GPS position to the server so that the main map shows a live taxi marker.
+1. Ensure your phone and the computer running the server are on the same network. Use the computer's IP address instead of `localhost` if needed (e.g. `http://192.168.1.10:3000/taxi.html`).
+2. Open `taxi.html` in the phone's browser and allow location access.
+3. Enter a taxi **ID** and optionally the **route** it is on, then tap **Share Location**. Leave the page open; it will continuously post your GPS coordinates to `/api/taxis`.
+4. Visit the main map at `http://localhost:3000` from any browser to see the phone's location rendered as a taxi marker.
 
 ### Testing the site
 
@@ -57,9 +60,6 @@ Navigate to `http://localhost:3000` in a browser to view the map with routes. Cl
 
 ### Editing and adding routes
 
-Routes are stored in `data/routes.json`. To change an existing route, edit this file directly and adjust fields such as `stops`, `fare` or the `path` array of `[lat, lng]` points. Refresh the browser (or restart the server) to see the changes.
-
-To add a brand new route without touching files, send a POST request:
 
 ```bash
 curl -X POST http://localhost:3000/api/routes \
@@ -71,7 +71,7 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 
 ### Snapping routes to roads
 
-The app draws coordinates exactly as provided. To align a path with streets, generate coordinates using the [Directions API](https://developers.google.com/maps/documentation/directions/get-directions) or the [Roads API Snap to Roads](https://developers.google.com/maps/documentation/roads/snap) endpoint and use the returned points in your route:
+
 
 ```bash
 curl 'https://roads.googleapis.com/v1/snapToRoads?path=-33.9,18.4|-33.91,18.41&key=YOUR_API_KEY'
