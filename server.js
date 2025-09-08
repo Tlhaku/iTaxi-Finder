@@ -61,6 +61,22 @@ app.put('/api/routes/:id', (req, res) => {
   });
 });
 
+app.delete('/api/routes/:id', (req, res) => {
+  const id = req.params.id;
+  const idx = routes.findIndex(r => r.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ error: 'route not found' });
+  }
+  routes.splice(idx, 1);
+  fs.writeFile(routesPath, JSON.stringify(routes, null, 2), err => {
+    if (err) {
+      return res.status(500).json({ error: 'failed to delete route' });
+    }
+    res.json({ status: 'ok' });
+  });
+});
+
+
 app.get('/api/taxis', async (req, res) => {
   if (taxiCollection) {
     const list = await taxiCollection.find().toArray();

@@ -1,6 +1,9 @@
 const API_KEY = 'AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk';
 let map, polyline;
 let path = [];
+let routesData = [];
+const select = document.getElementById('existingRoutes');
+
 
 function init() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -15,23 +18,26 @@ function init() {
   });
 
   fetch('/api/routes').then(r => r.json()).then(routes => {
-    const select = document.getElementById('existingRoutes');
+    routesData = routes;
+
     const blank = document.createElement('option');
     blank.value = '';
     blank.textContent = '-- new route --';
     select.appendChild(blank);
-    routes.forEach(rt => {
+    routesData.forEach(rt => {
+
       const opt = document.createElement('option');
       opt.value = rt.id;
       opt.textContent = rt.name;
       select.appendChild(opt);
     });
-    select.addEventListener('change', () => loadRoute(select.value, routes));
+    select.addEventListener('change', () => loadRoute(select.value));
   });
 }
 
-function loadRoute(id, routes) {
-  const route = routes.find(r => r.id === id);
+function loadRoute(id) {
+  const route = routesData.find(r => r.id === id);
+
   document.getElementById('routeId').value = route ? route.id : '';
   document.getElementById('routeName').value = route ? route.name : '';
   document.getElementById('routeFreq').value = route && route.frequency !== undefined ? route.frequency : '';
@@ -71,7 +77,58 @@ document.getElementById('routeForm').addEventListener('submit', e => {
     method,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
-  }).then(() => alert('Saved route'));
+  }).then(() => {
+    if (method === 'POST') {
+      routesData.push(body);
+      const opt = document.createElement('option');
+      opt.value = body.id;
+      opt.textContent = body.name;
+      select.appendChild(opt);
+      select.value = body.id;
+    } else {
+      const idx = routesData.findIndex(r => r.id === body.id);
+      if (idx > -1) routesData[idx] = body;
+    }
+    alert('Saved route');
+  });
+});
+
+document.getElementById('undo').addEventListener('click', () => {
+  path.pop();
+  polyline.setPath(path);
+});
+
+document.getElementById('clear').addEventListener('click', () => {
+  path = [];
+  polyline.setPath(path);
+});
+
+document.getElementById('delete').addEventListener('click', () => {
+  const id = select.value;
+  if (!id) return;
+  if (!confirm('Delete this route?')) return;
+  fetch(`/api/routes/${encodeURIComponent(id)}`, { method: 'DELETE' })
+    .then(() => {
+      const idx = routesData.findIndex(r => r.id === id);
+      if (idx > -1) routesData.splice(idx, 1);
+      const opt = select.querySelector(`option[value="${id}"]`);
+      if (opt) opt.remove();
+      select.value = '';
+      loadRoute('');
+    });
+});
+
+document.getElementById('cancel').addEventListener('click', () => {
+  loadRoute(select.value);
+});
+
+document.getElementById('togglePanel').addEventListener('click', () => {
+  document.getElementById('helpPanel').classList.toggle('hidden');
+});
+
+document.getElementById('closePanel').addEventListener('click', () => {
+  document.getElementById('helpPanel').classList.add('hidden');
+
 });
 
 window.init = init;

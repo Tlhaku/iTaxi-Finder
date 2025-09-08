@@ -4,21 +4,44 @@
   <meta charset="utf-8" />
   <title>Route Editor</title>
   <style>
-    body { font-family: sans-serif; }
+    body { background: #000; color: #fff; font-family: sans-serif; }
+    h1 { color: #d4af37; }
     #map { height: 60vh; width: 100%; margin-bottom: 10px; }
     label { display: block; margin: 4px 0; }
+    button, select, input { background: #111; color: #fff; border: 1px solid #d4af37; padding: 6px 10px; margin: 2px; }
+    button.primary { background: #d4af37; color: #000; }
+    .panel { position: absolute; top: 0; left: 0; width: 250px; height: 100%; background: rgba(0,0,0,0.7); border-right: 2px solid #d4af37; padding: 10px; overflow-y: auto; }
+    .panel.hidden { display: none; }
+
   </style>
 </head>
 <body>
   <h1>Route Editor</h1>
+  <button id="togglePanel">Instructions</button>
+  <div id="helpPanel" class="panel hidden">
+    <h2>Editing Routes</h2>
+    <p>Click on the map to add points. Use <strong>Undo</strong> to remove the last point and <strong>Clear</strong> to reset the path.</p>
+    <p>Select an existing route to modify it or enter a new ID and name to create one. Change the <strong>Name</strong> field to rename a route. Use <strong>Remove</strong> to delete the selected route.</p>
+    <p>After drawing a rough path, click <strong>Snap to Roads</strong> to align it smoothly to streets using the Google Roads API.</p>
+    <p>Press <strong>Save</strong> to store your changes or <strong>Cancel</strong> to revert to the last loaded route.</p>
+    <button id="closePanel">Close</button>
+  </div>
   <select id="existingRoutes"></select>
   <div id="map"></div>
+  <div id="controls">
+    <button type="button" id="undo">Undo</button>
+    <button type="button" id="clear">Clear</button>
+    <button type="button" id="delete">Remove</button>
+  </div>
+
   <form id="routeForm">
     <label>ID <input id="routeId" required /></label>
     <label>Name <input id="routeName" required /></label>
     <label>Frequency <input id="routeFreq" type="number" min="0" max="1" step="0.1" /></label>
     <button type="button" id="snap">Snap to Roads</button>
-    <button type="submit">Save</button>
+    <button type="submit" class="primary">Save</button>
+    <button type="button" id="cancel">Cancel</button>
+
   </form>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk"></script>
   <script src="routes.js"></script>

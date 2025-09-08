@@ -38,17 +38,6 @@ Examples:
   npm start
   ```
 
-- **Windows (PowerShell)**
-
-  ```powershell
-  $env:MONGODB_URI="mongodb://localhost:27017/taxi"
-  npm start
-  ```
-
-Use the URI of a MongoDB server you control. For a local database, the string above creates/uses a database named `taxi` on `localhost`. For hosted services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), obtain the connection string from your dashboard's **Connect** button and substitute it for the examples above.
-
-### Broadcasting from your phone
-
 1. Ensure your phone and the computer running the server are on the same network. Use the computer's IP address instead of `localhost` if needed (e.g. `http://192.168.1.10:3000/taxi.html`).
 2. Open `taxi.html` in the phone's browser and allow location access.
 3. Enter a taxi **ID** and optionally the **route** it is on, then tap **Share Location**. Leave the page open; it will continuously post your GPS coordinates to `/api/taxis`.
