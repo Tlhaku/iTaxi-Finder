@@ -27,6 +27,12 @@ npm start
 
 This serves the web site at `http://localhost:3000`.
 
+The app includes:
+
+- **Route Lookup** (`/index.html`) – browse routes on the map and search by name.
+- **Route Editor** (`/routes.html`) – draw, snap and save routes.
+- **About** (`/about.html`) – project overview and tips.
+
 To persist taxi locations, set the environment variable `MONGODB_URI` to your MongoDB connection string before starting the server.
 
 Examples:
@@ -49,6 +55,7 @@ Use the URI of a MongoDB server you control. For a local database, the string ab
 
 ### Broadcasting from your phone
 
+
 1. Ensure your phone and the computer running the server are on the same network. Use the computer's IP address instead of `localhost` if needed (e.g. `http://192.168.1.10:3000/taxi.html`).
 2. Open `taxi.html` in the phone's browser and allow location access.
 3. Enter a taxi **ID** and optionally the **route** it is on, then tap **Share Location**. Leave the page open; it will continuously post your GPS coordinates to `/api/taxis`.
@@ -56,7 +63,7 @@ Use the URI of a MongoDB server you control. For a local database, the string ab
 
 ### Testing the site
 
-Navigate to `http://localhost:3000` in a browser to view the map with routes. Click a route to see fare, hand signals, stops and time information.
+Navigate to `http://localhost:3000` in a browser to view the map with routes. Use the search box to filter by name and click a route to see fare, hand signals, stops and time information.
 
 ### Editing and adding routes
 
@@ -80,7 +87,6 @@ Newly added routes are appended to `data/routes.json` and appear on the map afte
 ### Snapping routes to roads
 
 `routes.html` automatically uses the [Google Roads API](https://developers.google.com/maps/documentation/roads/snap) when you click **Snap to Roads**, so the saved path follows actual streets. If you prefer scripting, you can call the endpoint yourself:
-
 
 ```bash
 curl 'https://roads.googleapis.com/v1/snapToRoads?path=-33.9,18.4|-33.91,18.41&key=YOUR_API_KEY'

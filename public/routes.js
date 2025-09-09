@@ -46,7 +46,6 @@ function loadRoute(id) {
   document.getElementById('routeName').value = route ? route.name : '';
   document.getElementById('routeFreq').value = route && route.frequency !== undefined ? route.frequency : '';
   path = route ? route.path.map(p => new google.maps.LatLng(p[0], p[1])) : [];
-
   redoStack = [];
 
   polyline.setPath(path);

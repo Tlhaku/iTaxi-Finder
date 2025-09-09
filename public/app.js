@@ -6,6 +6,7 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
   });
 
 
+  var routePolylines = {};
   $http.get('/api/routes').then(function(res) {
     $scope.routes = res.data;
     res.data.forEach(function(route) {
@@ -16,12 +17,23 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
         strokeColor: color,
         map: map
       });
+      routePolylines[route.id] = line;
       line.addListener('click', function() {
 
         $scope.$apply(function() { $scope.selected = route; });
       });
     });
   });
+
+  $scope.focusRoute = function(route) {
+    var line = routePolylines[route.id];
+    if (line) {
+      var bounds = new google.maps.LatLngBounds();
+      line.getPath().forEach(function(p) { bounds.extend(p); });
+      map.fitBounds(bounds);
+      $scope.selected = route;
+    }
+  };
 
   function refreshTaxis() {
     $http.get('/api/taxis').then(function(res) {

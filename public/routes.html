@@ -6,6 +6,9 @@
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; }
     h1 { color: #d4af37; }
+    nav { margin-bottom: 10px; }
+    nav a { color: #d4af37; margin-right: 10px; }
+
     #map { height: 60vh; width: 100%; margin-bottom: 10px; }
     label { display: block; margin: 4px 0; }
     button, select, input { background: #111; color: #fff; border: 1px solid #d4af37; padding: 6px 10px; margin: 2px; }
@@ -17,6 +20,12 @@
 </head>
 <body>
   <h1>Route Editor</h1>
+  <nav>
+    <a href="/index.html">Route Lookup</a>
+    <a href="/routes.html">Route Editor</a>
+    <a href="/about.html">About</a>
+  </nav>
+
   <button id="togglePanel">Instructions</button>
   <div id="helpPanel" class="panel hidden">
     <h2>Editing Routes</h2>
