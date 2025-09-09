@@ -55,6 +55,7 @@ Use the URI of a MongoDB server you control. For a local database, the string ab
 
 ### Broadcasting from your phone
 
+
 1. Ensure your phone and the computer running the server are on the same network. Use the computer's IP address instead of `localhost` if needed (e.g. `http://192.168.1.10:3000/taxi.html`).
 2. Open `taxi.html` in the phone's browser and allow location access.
 3. Enter a taxi **ID** and optionally the **route** it is on, then tap **Share Location**. Leave the page open; it will continuously post your GPS coordinates to `/api/taxis`.
@@ -73,6 +74,7 @@ Open `http://localhost:3000/routes.html` to draw or modify routes directly on a 
 Routes are also stored in `data/routes.json`. To change an existing route by hand, edit this file directly and adjust fields such as `stops`, `fare` or the `path` array of `[lat, lng]` points. Refresh the browser (or restart the server) to see the changes.
 
 To add a brand new route programmatically, send a POST request:
+
 
 ```bash
 curl -X POST http://localhost:3000/api/routes \
