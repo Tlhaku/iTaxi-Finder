@@ -2,13 +2,11 @@ var app = angular.module('TaxiFinderApp', []);
 app.controller('MapCtrl', function($scope, $http, $interval) {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -33.9249, lng: 18.4241 },
-    zoom: 12,
-    styles: [{ elementType: 'geometry', stylers: [{ color: '#000000' }] },
-             { elementType: 'labels.text.fill', stylers: [{ color: '#d4af37' }] },
-             { elementType: 'labels.text.stroke', stylers: [{ color: '#000000' }] }]
+    zoom: 12
   });
 
 
+  var routePolylines = {};
   $http.get('/api/routes').then(function(res) {
     $scope.routes = res.data;
     res.data.forEach(function(route) {
@@ -19,12 +17,23 @@ app.controller('MapCtrl', function($scope, $http, $interval) {
         strokeColor: color,
         map: map
       });
+      routePolylines[route.id] = line;
       line.addListener('click', function() {
 
         $scope.$apply(function() { $scope.selected = route; });
       });
     });
   });
+
+  $scope.focusRoute = function(route) {
+    var line = routePolylines[route.id];
+    if (line) {
+      var bounds = new google.maps.LatLngBounds();
+      line.getPath().forEach(function(p) { bounds.extend(p); });
+      map.fitBounds(bounds);
+      $scope.selected = route;
+    }
+  };
 
   function refreshTaxis() {
     $http.get('/api/taxis').then(function(res) {

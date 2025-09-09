@@ -4,18 +4,36 @@
   <meta charset="utf-8" />
   <title>iTaxi Finder</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk"></script>
 
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; }
     h1 { color: #d4af37; }
-    #map { height: 80vh; }
+    nav { margin-bottom: 10px; }
+    nav a { color: #d4af37; margin-right: 10px; }
+    #search { margin-bottom: 10px; }
+    ul { list-style: none; padding: 0; margin: 0 0 10px 0; }
+    li { margin: 2px 0; }
+    #map { height: 60vh; }
     .dialog { position: absolute; top: 10px; right: 10px; background: #111; border: 2px solid #d4af37; padding: 10px; }
     a { color: #d4af37; }
+    button, input { background: #111; color: #fff; border: 1px solid #d4af37; padding: 6px 10px; }
+    button { background: #d4af37; color: #000; }
   </style>
 </head>
 <body ng-controller="MapCtrl">
   <h1>iTaxi Finder</h1>
+  <nav>
+    <a href="/index.html">Route Lookup</a>
+    <a href="/routes.html">Route Editor</a>
+    <a href="/about.html">About</a>
+  </nav>
+  <input id="search" type="text" ng-model="query" placeholder="Search routes..." />
+  <ul>
+    <li ng-repeat="r in routes | filter:query">
+      <a href="" ng-click="focusRoute(r)">{{r.name}}</a>
+    </li>
+  </ul>
   <div id="map"></div>
   <div class="dialog" ng-if="selected">
     <h2>{{selected.name}}</h2>
@@ -26,7 +44,7 @@
     <p><strong>Rush:</strong> {{selected.loadingTimes.rush.join(', ')}}</p>
     <p><strong>Quiet:</strong> {{selected.loadingTimes.quiet.join(', ')}}</p>
   </div>
-  <p>Open <a href="/taxi.html">Taxi Page</a> on your phone to act as a taxi.</p>
-  <script src="app.js"></script>
-</body>
+    <p>Open <a href="/taxi.html">Taxi Page</a> on your phone to act as a taxi.</p>
+    <script src="app.js"></script>
+  </body>
 </html>
