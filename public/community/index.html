@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Community</title>
+<style>html,body{height:100%;margin:0;background:#fff;color:#000;font-family:sans-serif;}#map{position:absolute;top:0;left:0;right:0;bottom:0;}nav.topbar{position:fixed;top:0;left:0;right:0;height:40px;display:flex;align-items:center;background:rgba(255,255,255,0.5);z-index:10;padding:0 10px;}nav.topbar a,nav.topbar button{color:#000;margin-right:10px;text-decoration:none;background:transparent;border:none;cursor:pointer;font:inherit;}nav.topbar button{padding:4px 8px;border:1px solid #000;}.grid{position:absolute;top:60px;left:10px;right:10px;bottom:10px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;z-index:5;}.card{background:rgba(255,255,255,0.8);padding:10px;text-align:center;color:#000;text-decoration:none;border:1px solid #000;}.hidden-ui nav.topbar,.hidden-ui .grid{display:none;}.unhide-btn{position:fixed;top:10px;right:10px;z-index:15;display:none;}body.hidden-ui .unhide-btn{display:block;}</style>
+</head>
+<body>
+<nav class="topbar">
+<a href="/index.html">iTaxi Finder</a>
+<a href="/index.html">Route Finder</a>
+<a href="/routes.html">Route Adder</a>
+<a href="/delivery.html">Delivery</a>
+<a href="/community/index.html">Community</a>
+<a href="/registration.html">Registration</a>
+<a href="/about.html">About</a>
+<button id="hideUi">Hide UI</button>
+</nav>
+<button id="showUi" class="unhide-btn">Show UI</button>
+<div id="map"></div>
+<div class="grid"><a class="card" href="Soweto.html">Soweto</a>
+<a class="card" href="Tembisa.html">Tembisa</a>
+<a class="card" href="Khayelitsha.html">Khayelitsha</a>
+<a class="card" href="Umlazi.html">Umlazi</a>
+<a class="card" href="Soshanguve.html">Soshanguve</a>
+<a class="card" href="Mamelodi.html">Mamelodi</a>
+<a class="card" href="Katlehong.html">Katlehong</a>
+<a class="card" href="Sebokeng.html">Sebokeng</a>
+<a class="card" href="Mdantsane.html">Mdantsane</a>
+<a class="card" href="MitchellsPlain.html">Mitchells Plain</a>
+<a class="card" href="Alexandra.html">Alexandra</a>
+<a class="card" href="Daveyton.html">Daveyton</a>
+<a class="card" href="KwaMashu.html">KwaMashu</a>
+<a class="card" href="Vosloorus.html">Vosloorus</a>
+<a class="card" href="OrangeFarm.html">Orange Farm</a>
+<a class="card" href="Langa.html">Langa</a>
+<a class="card" href="Gugulethu.html">Gugulethu</a>
+<a class="card" href="Nyanga.html">Nyanga</a>
+<a class="card" href="Delft.html">Delft</a>
+<a class="card" href="Philippi.html">Philippi</a>
+<a class="card" href="Thokoza.html">Thokoza</a>
+<a class="card" href="Tsakane.html">Tsakane</a>
+<a class="card" href="KwaThema.html">KwaThema</a>
+<a class="card" href="ReigerPark.html">Reiger Park</a>
+<a class="card" href="Atteridgeville.html">Atteridgeville</a>
+<a class="card" href="Ga-Rankuwa.html">Ga-Rankuwa</a>
+<a class="card" href="Kagiso.html">Kagiso</a>
+<a class="card" href="Zwide.html">Zwide</a>
+<a class="card" href="KwaZakhele.html">KwaZakhele</a>
+<a class="card" href="Motherwell.html">Motherwell</a>
+<a class="card" href="NewBrighton.html">New Brighton</a>
+<a class="card" href="Zwelitsha.html">Zwelitsha</a>
+<a class="card" href="DuncanVillage.html">Duncan Village</a>
+<a class="card" href="Botshabelo.html">Botshabelo</a>
+<a class="card" href="ThabaNchu.html">Thaba Nchu</a>
+<a class="card" href="Seshego.html">Seshego</a>
+<a class="card" href="Mankweng.html">Mankweng</a>
+<a class="card" href="Lebowakgomo.html">Lebowakgomo</a>
+<a class="card" href="Galeshewe.html">Galeshewe</a>
+<a class="card" href="Ikageng.html">Ikageng</a>
+<a class="card" href="Boitekong.html">Boitekong</a>
+<a class="card" href="Phokeng.html">Phokeng</a>
+<a class="card" href="Boipatong.html">Boipatong</a>
+<a class="card" href="Sharpeville.html">Sharpeville</a>
+<a class="card" href="Bophelong.html">Bophelong</a>
+<a class="card" href="Edendale.html">Edendale</a>
+<a class="card" href="Imbali.html">Imbali</a>
+<a class="card" href="KwaNobuhle.html">KwaNobuhle</a>
+<a class="card" href="Thembalethu.html">Thembalethu</a>
+<a class="card" href="KwaNonqaba.html">KwaNonqaba</a></div>
+<script src="../about.js"></script>
+<script src="../loadGoogleMaps.js"></script>
+<script>document.getElementById('hideUi').addEventListener('click',()=>{document.body.classList.add('hidden-ui');});document.getElementById('showUi').addEventListener('click',()=>{document.body.classList.remove('hidden-ui');});</script>
+<script>window.initMap=window.initMap;</script>
+</body>
+</html>

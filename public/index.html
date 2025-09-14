@@ -1,41 +1,46 @@
 <!doctype html>
-<html ng-app="TaxiFinderApp">
+<html>
 <head>
   <meta charset="utf-8" />
   <title>iTaxi Finder</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <style>
-    body { background: #000; color: #fff; font-family: sans-serif; }
-    h1 { color: #d4af37; }
-    nav { margin-bottom: 10px; }
-    nav a { color: #d4af37; margin-right: 10px; }
-    #search { margin-bottom: 10px; }
-    ul { list-style: none; padding: 0; margin: 0 0 10px 0; }
-    li { margin: 2px 0; }
-    #map { height: 60vh; }
-    .dialog { position: absolute; top: 10px; right: 10px; background: #111; border: 2px solid #d4af37; padding: 10px; }
-    a { color: #d4af37; }
-    button, input { background: #111; color: #fff; border: 1px solid #d4af37; padding: 6px 10px; }
-    button { background: #d4af37; color: #000; }
+    html, body { height: 100%; margin: 0; background: #fff; color: #000; font-family: sans-serif; }
+    #map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    nav.topbar { position: fixed; top: 0; left: 0; right: 0; height: 40px; display: flex; align-items: center; background: rgba(255,255,255,0.5); z-index: 10; padding: 0 10px; }
+    nav.topbar a, nav.topbar button { color: #000; margin-right: 10px; text-decoration: none; background: transparent; border: none; cursor: pointer; font: inherit; }
+    nav.topbar button { padding: 4px 8px; border: 1px solid #000; }
+    .ui-overlay { position: absolute; z-index: 5; }
+    #searchPanel { top: 50px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.8); padding: 10px; }
+    #resultList { top: 100px; left: 10px; background: rgba(255,255,255,0.8); padding: 10px; max-height: 200px; overflow-y: auto; }
+    .dialog { top: 50px; right: 10px; background: rgba(255,255,255,0.9); border: 2px solid #000; padding: 10px; }
+    .hidden-ui .ui-overlay, .hidden-ui nav.topbar { display: none; }
+    .unhide-btn { position: fixed; top: 10px; right: 10px; z-index: 15; display: none; }
+    body.hidden-ui .unhide-btn { display: block; }
   </style>
 </head>
-<body ng-controller="MapCtrl">
-  <h1>iTaxi Finder</h1>
-  <nav>
-    <a href="/index.html">Route Lookup</a>
-    <a href="/routes.html">Route Editor</a>
+<body>
+  <nav class="topbar ui-overlay">
+    <a href="/index.html">iTaxi Finder</a>
+    <a href="/index.html">Route Finder</a>
+    <a href="/routes.html">Route Adder</a>
+    <a href="/delivery.html">Delivery</a>
+    <a href="/community/index.html">Community</a>
+    <a href="/registration.html">Registration</a>
     <a href="/about.html">About</a>
+    <button id="hideUi">Hide UI</button>
   </nav>
-  <input id="search" type="text" ng-model="query" placeholder="Search routes..." />
-  <ul>
-    <li ng-repeat="r in routes | filter:query">
-      <a href="" ng-click="focusRoute(r)">{{r.name}}</a>
-    </li>
+
+  <button id="showUi" class="unhide-btn">Show UI</button>
+
+  <div id="searchPanel" class="ui-overlay">
+    <input id="search" type="text" ng-model="query" placeholder="Search routes..." />
+  </div>
+  <ul id="resultList" class="ui-overlay">
+    <li ng-repeat="r in routes | filter:query"><a href="" ng-click="focusRoute(r)">{{r.name}}</a></li>
   </ul>
   <div id="map"></div>
-  <div class="dialog" ng-if="selected">
+  <div class="dialog ui-overlay" ng-if="selected">
     <h2>{{selected.name}}</h2>
     <p><strong>Fare:</strong> R{{selected.fare}}</p>
     <p><strong>Hand Signal:</strong> {{selected.handSignal}}</p>
@@ -44,8 +49,17 @@
     <p><strong>Rush:</strong> {{selected.loadingTimes.rush.join(', ')}}</p>
     <p><strong>Quiet:</strong> {{selected.loadingTimes.quiet.join(', ')}}</p>
   </div>
-    <p>Open <a href="/taxi.html">Taxi Page</a> on your phone to act as a taxi.</p>
 
-    <script src="app.js"></script>
-  </body>
+  <script src="app.js"></script>
+  <script src="loadGoogleMaps.js"></script>
+  <script>
+    document.getElementById('hideUi').addEventListener('click', () => {
+      document.body.classList.add('hidden-ui');
+    });
+    document.getElementById('showUi').addEventListener('click', () => {
+      document.body.classList.remove('hidden-ui');
+    });
+  </script>
+</body>
 </html>
+

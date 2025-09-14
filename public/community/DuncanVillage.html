@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Duncan Village Community</title>
+<style>html,body{height:100%;margin:0;background:#fff;color:#000;font-family:sans-serif;}#map{position:absolute;top:0;left:0;right:0;bottom:0;}nav.topbar{position:fixed;top:0;left:0;right:0;height:40px;display:flex;align-items:center;background:rgba(255,255,255,0.5);z-index:10;padding:0 10px;}nav.topbar a,nav.topbar button{color:#000;margin-right:10px;text-decoration:none;background:transparent;border:none;cursor:pointer;font:inherit;}nav.topbar button{padding:4px 8px;border:1px solid #000;}.content{position:absolute;top:60px;left:10px;background:rgba(255,255,255,0.8);padding:10px;z-index:5;}.hidden-ui nav.topbar,.hidden-ui .content{display:none;}.unhide-btn{position:fixed;top:10px;right:10px;z-index:15;display:none;}body.hidden-ui .unhide-btn{display:block;}</style>
+</head>
+<body>
+<nav class="topbar">
+<a href="/index.html">iTaxi Finder</a>
+<a href="/index.html">Route Finder</a>
+<a href="/routes.html">Route Adder</a>
+<a href="/delivery.html">Delivery</a>
+<a href="/community/index.html">Community</a>
+<a href="/registration.html">Registration</a>
+<a href="/about.html">About</a>
+<button id="hideUi">Hide UI</button>
+</nav>
+<button id="showUi" class="unhide-btn">Show UI</button>
+<div id="map"></div>
+<div class="content"><h1>Duncan Village</h1><p>No posts yet.</p></div>
+<script src="../about.js"></script>
+<script src="../loadGoogleMaps.js"></script>
+<script>document.getElementById('hideUi').addEventListener('click',()=>{document.body.classList.add('hidden-ui');});document.getElementById('showUi').addEventListener('click',()=>{document.body.classList.remove('hidden-ui');});</script>
+</body>
+</html>

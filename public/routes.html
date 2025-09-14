@@ -4,57 +4,70 @@
   <meta charset="utf-8" />
   <title>Route Editor</title>
   <style>
-    body { background: #000; color: #fff; font-family: sans-serif; }
-    h1 { color: #d4af37; }
-    nav { margin-bottom: 10px; }
-    nav a { color: #d4af37; margin-right: 10px; }
-
-    #map { height: 60vh; width: 100%; margin-bottom: 10px; }
-    label { display: block; margin: 4px 0; }
-    button, select, input { background: #111; color: #fff; border: 1px solid #d4af37; padding: 6px 10px; margin: 2px; }
-    button.primary { background: #d4af37; color: #000; }
-    .panel { position: absolute; top: 0; left: 0; width: 250px; height: 100%; background: rgba(0,0,0,0.7); border-right: 2px solid #d4af37; padding: 10px; overflow-y: auto; }
+    html, body { height: 100%; margin: 0; background: #fff; color: #000; font-family: sans-serif; }
+    #map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    nav.topbar { position: fixed; top: 0; left: 0; right: 0; height: 40px; display: flex; align-items: center; background: rgba(255,255,255,0.5); z-index: 10; padding: 0 10px; }
+    nav.topbar a, nav.topbar button { color: #000; margin-right: 10px; text-decoration: none; background: transparent; border: none; cursor: pointer; font: inherit; }
+    nav.topbar button { padding: 4px 8px; border: 1px solid #000; }
+    .panel { position: absolute; top: 50px; left: 0; width: 250px; background: rgba(255,255,255,0.8); border-right: 2px solid #000; padding: 10px; height: calc(100% - 50px); overflow-y: auto; }
     .panel.hidden { display: none; }
-
+    .controls { position: absolute; top: 50px; left: 260px; background: rgba(255,255,255,0.8); padding: 10px; }
+    .hidden-ui nav.topbar, .hidden-ui .panel, .hidden-ui .controls { display: none; }
+    button, select, input { background: #fff; color: #000; border: 1px solid #000; padding: 6px 10px; margin: 2px; }
+    button.primary { background: #000; color: #fff; }
+    .unhide-btn { position: fixed; top: 10px; right: 10px; z-index: 15; display: none; }
+    body.hidden-ui .unhide-btn { display: block; }
   </style>
 </head>
 <body>
-  <h1>Route Editor</h1>
-  <nav>
-    <a href="/index.html">Route Lookup</a>
-    <a href="/routes.html">Route Editor</a>
+  <nav class="topbar">
+    <a href="/index.html">iTaxi Finder</a>
+    <a href="/index.html">Route Finder</a>
+    <a href="/routes.html">Route Adder</a>
+    <a href="/delivery.html">Delivery</a>
+    <a href="/community/index.html">Community</a>
+    <a href="/registration.html">Registration</a>
     <a href="/about.html">About</a>
+    <button id="hideUi">Hide UI</button>
   </nav>
 
-  <button id="togglePanel">Instructions</button>
+  <button id="showUi" class="unhide-btn">Show UI</button>
+
   <div id="helpPanel" class="panel hidden">
     <h2>Editing Routes</h2>
-    <p>Click on the map to add points. Use <strong>Undo</strong> to remove the last point, <strong>Redo</strong> to re-add it, and <strong>Clear</strong> to reset the path.</p>
-
-    <p>Select an existing route to modify it or enter a new ID and name to create one. Change the <strong>Name</strong> field to rename a route. Use <strong>Remove</strong> to delete the selected route.</p>
-    <p>After drawing a rough path, click <strong>Snap to Roads</strong> to align it smoothly to streets using the Google Roads API.</p>
-    <p>Press <strong>Save</strong> to store your changes or <strong>Cancel</strong> to revert to the last loaded route.</p>
+    <p>Click on the map to add points. Use Undo/Redo/Clear for path editing. Snap to Roads aligns the path to real streets.</p>
+    <p>Select an existing route or enter a new ID and name. Save to persist.</p>
     <button id="closePanel">Close</button>
   </div>
-  <select id="existingRoutes"></select>
+  <button id="togglePanel" class="controls">Instructions</button>
   <div id="map"></div>
-  <div id="controls">
-    <button type="button" id="undo">Undo</button>
-    <button type="button" id="redo">Redo</button>
-    <button type="button" id="clear">Clear</button>
-    <button type="button" id="delete">Remove</button>
+  <div class="controls" style="left:260px;">
+    <select id="existingRoutes"></select>
+    <div id="controls">
+      <button type="button" id="undo">Undo</button>
+      <button type="button" id="redo">Redo</button>
+      <button type="button" id="clear">Clear</button>
+      <button type="button" id="delete">Remove</button>
+    </div>
+    <form id="routeForm">
+      <label>ID <input id="routeId" required /></label>
+      <label>Name <input id="routeName" required /></label>
+      <label>Frequency <input id="routeFreq" type="number" min="0" max="1" step="0.1" /></label>
+      <button type="button" id="snap">Snap to Roads</button>
+      <button type="submit" class="primary">Save</button>
+      <button type="button" id="cancel">Cancel</button>
+    </form>
   </div>
 
-  <form id="routeForm">
-    <label>ID <input id="routeId" required /></label>
-    <label>Name <input id="routeName" required /></label>
-    <label>Frequency <input id="routeFreq" type="number" min="0" max="1" step="0.1" /></label>
-    <button type="button" id="snap">Snap to Roads</button>
-    <button type="submit" class="primary">Save</button>
-    <button type="button" id="cancel">Cancel</button>
-
-  </form>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYxFkL9vcvbaFz-Ut1Lm2Vge5byodujfk"></script>
   <script src="routes.js"></script>
+  <script src="loadGoogleMaps.js"></script>
+  <script>
+    document.getElementById('hideUi').addEventListener('click', () => {
+      document.body.classList.add('hidden-ui');
+    });
+    document.getElementById('showUi').addEventListener('click', () => {
+      document.body.classList.remove('hidden-ui');
+    });
+  </script>
 </body>
 </html>
