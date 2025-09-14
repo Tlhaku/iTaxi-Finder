@@ -3,7 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -76,6 +77,25 @@ app.delete('/api/routes/:id', (req, res) => {
   });
 });
 
+app.get('/config', (req, res) => {
+  res.json({ googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || '' });
+});
+
+app.post('/api/roads/snap', async (req, res) => {
+  const { path } = req.body;
+  if (!Array.isArray(path) || path.length === 0) {
+    return res.status(400).json({ error: 'path required' });
+  }
+  const pathStr = path.map(p => `${p.lat},${p.lng}`).join('|');
+  try {
+    const url = `https://roads.googleapis.com/v1/snapToRoads?interpolate=true&path=${encodeURIComponent(pathStr)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({ error: 'snap failed' });
+  }
+});
 
 app.get('/api/taxis', async (req, res) => {
   if (taxiCollection) {
@@ -105,3 +125,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
